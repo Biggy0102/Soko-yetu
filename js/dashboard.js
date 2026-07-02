@@ -3,7 +3,6 @@
 // Edit, delete, and mark-sold all call real PATCH/DELETE endpoints.
 // Redirects to login if not authenticated.
 
-const API = "https://soko-yetu-backend.onrender.com/api";
 
 const STATUS_LABELS = {
   active: "Active",

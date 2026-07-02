@@ -2,7 +2,6 @@
 // Phase 2: account updates, password changes, and notification/privacy preferences
 // all persist to the real API instead of just showing a confirmation flash.
 
-const API = "https://soko-yetu-backend.onrender.com/api";
 
 // ===== TAB SWITCHING =====
 

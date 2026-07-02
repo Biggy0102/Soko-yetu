@@ -3,35 +3,17 @@
 // On success, JWT token + user object are stored in localStorage so every
 // page can check "is anyone signed in" without asking the server again.
 
-const API = "https://soko-yetu-backend.onrender.com/api";
+// NOTE: API, getToken, getUser, clearSession, isLoggedIn are all provided by
+// main.js, which must be loaded on this page BEFORE auth.js. Do not redeclare
+// them here - that causes a "already declared" SyntaxError that silently
+// breaks the whole page (same class of bug fixed in dashboard.js/post-ad.js/
+// settings.js).
 
-// ===== TOKEN / SESSION HELPERS =====
-// Used by every page that needs to know the current user (header, dashboard, post-ad, etc.)
+// ===== SESSION HELPER UNIQUE TO AUTH PAGES =====
 
 function saveSession(token, user) {
   localStorage.setItem("sokoyetu_token", token);
   localStorage.setItem("sokoyetu_user", JSON.stringify(user));
-}
-
-function getToken() {
-  return localStorage.getItem("sokoyetu_token");
-}
-
-function getUser() {
-  try {
-    return JSON.parse(localStorage.getItem("sokoyetu_user"));
-  } catch (e) {
-    return null;
-  }
-}
-
-function clearSession() {
-  localStorage.removeItem("sokoyetu_token");
-  localStorage.removeItem("sokoyetu_user");
-}
-
-function isLoggedIn() {
-  return !!getToken();
 }
 
 // ===== SHARED: PASSWORD VISIBILITY TOGGLE =====
@@ -265,13 +247,17 @@ async function handleRegister() {
 
 // ===== INIT =====
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
   // Store button labels so setSubmitLoading can restore them
   ["loginBtn", "registerBtn"].forEach(id => {
     const btn = document.getElementById(id);
     if (btn) btn.dataset.label = btn.textContent;
   });
 
+  // main.js's own DOMContentLoaded handler also calls this, but that runs
+  // independently and may not finish before we need COUNTRIES here - so we
+  // await it ourselves too rather than race against it.
+  await loadReferenceData();
   renderRegisterCountrySelect();
   setupPasswordStrengthMeter();
 

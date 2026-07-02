@@ -2,7 +2,6 @@
 // Phase 2: photos uploaded to /api/upload (Cloudinary), then listing created
 // via POST /api/listings. Requires login — redirects if not authenticated.
 
-const API = "https://soko-yetu-backend.onrender.com/api";
 
 let currentStep = 1;
 const TOTAL_STEPS = 5;
