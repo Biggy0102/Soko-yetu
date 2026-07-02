@@ -258,9 +258,72 @@ async function loadHomepageListings() {
   }
 }
 
+// ===== BOTTOM NAV (Jiji-style: Home / Saved / Sell / Messages / Profile) =====
+// Injected via JS so every page gets it automatically without editing each
+// HTML file individually. Reuses the existing header panels for Saved/Messages
+// where they exist on the page (full-header pages); falls back to a normal
+// link to the homepage on pages that don't have those panels (info pages).
+
+function handleBottomNavSaved(e) {
+  const panel = document.getElementById("panel-saved");
+  if (panel) {
+    e.preventDefault();
+    toggleIconPanel("saved");
+    return false;
+  }
+  return true;
+}
+
+function handleBottomNavMessages(e) {
+  const panel = document.getElementById("panel-messages");
+  if (panel) {
+    e.preventDefault();
+    toggleIconPanel("messages");
+    return false;
+  }
+  return true;
+}
+
+function renderBottomNav() {
+  if (document.getElementById("bottomNav")) return;
+
+  const path = window.location.pathname.split("/").pop() || "index.html";
+  const loggedIn = isLoggedIn();
+  const profileHref = loggedIn ? "dashboard.html" : "login.html";
+  const isProfileActive = path === "dashboard.html" || path === "login.html" || path === "settings.html";
+
+  const nav = document.createElement("nav");
+  nav.className = "bottom-nav";
+  nav.id = "bottomNav";
+  nav.innerHTML = `
+    <a href="index.html" class="bottom-nav-item ${path === "index.html" ? "active" : ""}">
+      <span class="bottom-nav-icon">🏠</span>
+      <span class="bottom-nav-label">Home</span>
+    </a>
+    <a href="index.html" class="bottom-nav-item" onclick="return handleBottomNavSaved(event)">
+      <span class="bottom-nav-icon">🔖</span>
+      <span class="bottom-nav-label">Saved</span>
+    </a>
+    <a href="post-ad.html" class="bottom-nav-item ${path === "post-ad.html" ? "active" : ""}">
+      <span class="bottom-nav-icon">➕</span>
+      <span class="bottom-nav-label">Sell</span>
+    </a>
+    <a href="index.html" class="bottom-nav-item" onclick="return handleBottomNavMessages(event)">
+      <span class="bottom-nav-icon">💬</span>
+      <span class="bottom-nav-label">Messages</span>
+    </a>
+    <a href="${profileHref}" class="bottom-nav-item ${isProfileActive ? "active" : ""}">
+      <span class="bottom-nav-icon">👤</span>
+      <span class="bottom-nav-label">Profile</span>
+    </a>
+  `;
+  document.body.appendChild(nav);
+}
+
 // ===== INIT =====
 
 document.addEventListener("DOMContentLoaded", async function () {
+  renderBottomNav();
   await loadReferenceData();
   renderCountrySelect();
   renderCategorySidebar();
