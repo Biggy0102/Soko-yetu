@@ -227,6 +227,15 @@ function selectCategory(catId) {
 function selectSubcategory(subId) {
   postAdState.sub = subId;
   renderCategoryPicker(); // re-render to move the "selected" highlight to the chosen chip
+
+  // Once a subcategory is picked, make the title placeholder reflect it
+  // specifically, rather than the generic parent-category example.
+  const cat = CATEGORIES.find(c => c.id === postAdState.category);
+  const sub = cat && cat.subcategories ? cat.subcategories.find(s => s.id === subId) : null;
+  const titleInput = document.getElementById("adTitle");
+  if (sub && titleInput) {
+    titleInput.placeholder = `e.g. ${sub.name} - describe condition, brand, etc.`;
+  }
 }
 
 // ===== STEP 2: SPEC FIELDS =====
