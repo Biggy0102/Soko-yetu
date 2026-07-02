@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="pageTitle">Listing - Soko Yetu</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header">
+    <div class="header-top">
+      <div class="container header-top-inner">
+        <a href="index.html" class="logo">
+          <img src="images/logo.png" alt="Soko Yetu" class="logo-img" id="logoImg" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='inline-flex';">
+          <span class="logo-fallback" id="logoFallback">Soko<span class="accent">Yetu</span></span>
+        </a>
+
+        <div class="header-right">
+          <span class="tagline">SELL FASTER, BUY SMARTER</span>
+
+          <div class="icon-nav" id="iconNav">
+
+            <div class="icon-item">
+              <button type="button" class="icon-btn" onclick="toggleIconPanel('saved')" aria-label="Saved ads">🔖</button>
+              <div class="icon-panel" id="panel-saved">
+                <h4>Saved ads</h4>
+                <p class="icon-panel-empty">You haven't saved any ads yet. Tap the heart on a listing to save it here.</p>
+              </div>
+            </div>
+
+            <div class="icon-item">
+              <button type="button" class="icon-btn" onclick="toggleIconPanel('messages')" aria-label="Messages">
+                💬<span class="icon-dot"></span>
+              </button>
+              <div class="icon-panel" id="panel-messages">
+                <h4>Messages</h4>
+                <div class="icon-panel-row">
+                  <span class="icon-panel-avatar">J</span>
+                  <div>
+                    <div class="icon-panel-row-title">James M.</div>
+                    <div class="icon-panel-row-sub">Toyota Axio 2014 — "Thanks for reaching out!"</div>
+                  </div>
+                </div>
+                <p class="icon-panel-note">Full messaging is coming once accounts are live.</p>
+              </div>
+            </div>
+
+            <div class="icon-item">
+              <button type="button" class="icon-btn" onclick="toggleIconPanel('alerts')" aria-label="Notifications">🔔</button>
+              <div class="icon-panel" id="panel-alerts">
+                <h4>Notifications</h4>
+                <p class="icon-panel-empty">No new notifications right now.</p>
+              </div>
+            </div>
+
+            <div class="icon-item">
+              <button type="button" class="icon-btn" onclick="toggleIconPanel('myads')" aria-label="My ads">📋</button>
+              <div class="icon-panel" id="panel-myads">
+                <h4>My ads</h4>
+                <p class="icon-panel-empty">Sign in to see and manage the ads you've posted.</p>
+                <a href="login.html" class="btn btn-outline btn-full">Sign in</a>
+              </div>
+            </div>
+
+            <div class="icon-item">
+              <a href="settings.html" class="icon-btn" aria-label="Settings">⚙️</a>
+            </div>
+
+            <div class="icon-item">
+              <button type="button" class="icon-btn icon-btn-account" onclick="toggleIconPanel('account')" aria-label="Account">👤</button>
+              <div class="icon-panel" id="panel-account">
+                <h4>Your account</h4>
+                <a href="settings.html" class="btn btn-outline btn-full">Settings</a>
+                <a href="login.html" class="btn btn-outline btn-full">Sign in</a>
+                <a href="register.html" class="btn btn-primary btn-full">Create account</a>
+              </div>
+            </div>
+
+          </div>
+
+          <a href="post-ad.html" class="btn btn-primary">SELL</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="container listing-page" id="listingPage">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" id="breadcrumb"></nav>
+
+    <!-- Filled entirely by JS once the listing is found -->
+    <div id="listingContent"></div>
+
+    <!-- Shown only if the listing id is missing/invalid -->
+    <div class="not-found" id="notFound" style="display:none;">
+      <h2>Listing not found</h2>
+      <p>This ad may have been removed or the link is incorrect.</p>
+      <a href="browse.html" class="btn btn-primary">Browse all listings</a>
+    </div>
+
+    <!-- Similar listings -->
+    <section class="section-block" id="similarSection" style="display:none;">
+      <div class="section-header">
+        <h2>Similar listings</h2>
+      </div>
+      <div class="listing-grid" id="similarGrid"></div>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="skyline"></div>
+    <div class="footer-body">
+      <div class="container footer-inner">
+        <div class="footer-col">
+          <h4>About us</h4>
+          <a href="about.html">About Soko Yetu</a>
+          <a href="#">We are hiring!</a>
+          <a href="terms.html">Terms & Conditions</a>
+          <a href="privacy.html">Privacy Policy</a>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <a href="contact.html">support@sokoyetu.africa</a>
+          <a href="safety-tips.html">Safety tips</a>
+          <a href="contact.html">Contact us</a>
+          <a href="faq.html">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h4>For sellers</h4>
+          <a href="post-ad.html">Post an ad</a>
+          <a href="faq.html">Selling tips</a>
+          <a href="#">Boost your ad</a>
+        </div>
+        <div class="footer-col">
+          <h4>Our resources</h4>
+          <a href="#">Soko Yetu on Facebook</a>
+          <a href="#">Our Instagram</a>
+          <a href="#">Our YouTube</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Soko Yetu. Built for East Africa.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== REPORT AD MODAL ===== -->
+  <div class="modal-overlay" id="reportModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Report this ad</h3>
+        <button type="button" class="modal-close" onclick="closeReportModal()">✕</button>
+      </div>
+      <p class="modal-subtext">Help us keep Soko Yetu safe. Why are you reporting this ad?</p>
+      <div class="modal-options">
+        <label><input type="radio" name="reportReason" value="scam"> Suspected scam or fraud</label>
+        <label><input type="radio" name="reportReason" value="prohibited"> Prohibited item</label>
+        <label><input type="radio" name="reportReason" value="duplicate"> Duplicate ad</label>
+        <label><input type="radio" name="reportReason" value="wrong-category"> Wrong category</label>
+        <label><input type="radio" name="reportReason" value="other"> Other</label>
+      </div>
+      <button type="button" class="btn btn-primary btn-full" onclick="submitReport()">Submit report</button>
+      <p class="modal-confirm" id="reportConfirm" style="display:none;">Thanks — our team will review this ad shortly.</p>
+    </div>
+  </div>
+
+  <!-- ===== CONTACT REVEAL MODAL ===== -->
+  <div class="modal-overlay" id="contactModal">
+    <div class="modal-box modal-box-small">
+      <div class="modal-header">
+        <h3>Seller contact</h3>
+        <button type="button" class="modal-close" onclick="closeContactModal()">✕</button>
+      </div>
+      <p class="modal-subtext" id="contactSellerName"></p>
+      <div class="contact-phone-box" id="contactPhoneBox"></div>
+      <p class="modal-safety-note">⚠️ Always meet in a public place and inspect items before paying. Never send money in advance.</p>
+    </div>
+  </div>
+
+  <!-- ===== MAKE AN OFFER MODAL ===== -->
+  <div class="modal-overlay" id="offerModal">
+    <div class="modal-box modal-box-small">
+      <div class="modal-header">
+        <h3>Make an offer</h3>
+        <button type="button" class="modal-close" onclick="closeOfferModal()">✕</button>
+      </div>
+      <p class="modal-subtext" id="offerListingTitle"></p>
+      <p class="modal-subtext">Asking price: <strong id="offerAskingPrice"></strong></p>
+      <div class="callback-form" id="offerForm">
+        <input type="number" id="offerAmount" placeholder="Your offer amount (KES)" min="0">
+        <button type="button" class="btn btn-primary btn-full" onclick="submitOffer()">Send offer</button>
+      </div>
+      <p class="modal-confirm" id="offerConfirm" style="display:none;">Your offer has been sent to the seller.</p>
+    </div>
+  </div>
+
+  <!-- ===== PRICE HISTORY MODAL ===== -->
+  <div class="modal-overlay" id="priceHistoryModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Price history</h3>
+        <button type="button" class="modal-close" onclick="closePriceHistoryModal()">✕</button>
+      </div>
+      <p class="modal-subtext" id="priceHistoryTitle"></p>
+      <div class="price-history-chart" id="priceHistoryChart"></div>
+      <p class="modal-safety-note">Estimated trend based on similar ads. Phase 2 will track real price changes over time.</p>
+    </div>
+  </div>
+
+  <!-- ===== REQUEST CALL BACK MODAL ===== -->
+  <div class="modal-overlay" id="callbackModal">
+    <div class="modal-box modal-box-small">
+      <div class="modal-header">
+        <h3>Request a call back</h3>
+        <button type="button" class="modal-close" onclick="closeCallbackModal()">✕</button>
+      </div>
+      <p class="modal-subtext">Leave your number and the seller will call you back about this ad.</p>
+      <div class="callback-form" id="callbackForm">
+        <input type="text" id="callbackName" placeholder="Your name">
+        <input type="tel" id="callbackPhone" placeholder="Your phone number">
+        <button type="button" class="btn btn-primary btn-full" onclick="submitCallback()">Request call back</button>
+      </div>
+      <p class="modal-confirm" id="callbackConfirm" style="display:none;">Thanks! The seller will call you back shortly.</p>
+    </div>
+  </div>
+
+  <!-- ===== CHAT MODAL ===== -->
+  <div class="modal-overlay" id="chatModal">
+    <div class="modal-box modal-box-chat">
+      <div class="modal-header">
+        <div>
+          <h3 id="chatSellerName">Chat</h3>
+          <p class="chat-listing-ref" id="chatListingRef"></p>
+        </div>
+        <button type="button" class="modal-close" onclick="closeChatModal()">✕</button>
+      </div>
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="chat-input-row">
+        <input type="text" id="chatInput" placeholder="Type a message...">
+        <button type="button" class="btn btn-primary" onclick="sendChatMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/listing.js"></script>
+</body>
+</html>

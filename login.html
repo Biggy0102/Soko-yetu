@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In - Soko Yetu</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== SIMPLE AUTH HEADER ===== -->
+  <header class="auth-header">
+    <div class="container auth-header-inner">
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="Soko Yetu" class="logo-img" id="logoImg" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='inline-flex';">
+        <span class="logo-fallback" id="logoFallback">Soko<span class="accent">Yetu</span></span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="auth-page">
+    <div class="auth-card">
+
+      <h1 class="auth-heading">Sign in</h1>
+      <p class="auth-subtext">Welcome back! Sign in to manage your ads and messages.</p>
+
+      <div class="phase1-note">
+        Phase 1 note: sign-in here is for preview only — accounts aren't saved or verified yet. This becomes a real, working login once the backend is connected.
+      </div>
+
+      <form id="loginForm" onsubmit="return false;">
+        <label class="field-label">Phone number or email</label>
+        <input type="text" id="loginIdentifier" class="field-input" placeholder="e.g. 0712345678 or you@email.com">
+        <div class="field-error" id="loginIdentifierError"></div>
+
+        <label class="field-label">Password</label>
+        <div class="password-field-wrap">
+          <input type="password" id="loginPassword" class="field-input" placeholder="Enter your password">
+          <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('loginPassword', this)">Show</button>
+        </div>
+        <div class="field-error" id="loginPasswordError"></div>
+
+        <div class="auth-row-between">
+          <label class="checkbox-label">
+            <input type="checkbox" id="rememberMe"> Remember me
+          </label>
+          <a href="#" class="auth-link-small" onclick="alert('Password reset will be available once accounts are live.'); return false;">Forgot password?</a>
+        </div>
+
+        <button type="button" class="btn btn-primary btn-full btn-lg" onclick="handleLogin()">Sign in</button>
+      </form>
+
+      <div class="auth-divider"><span>or</span></div>
+
+      <button type="button" class="btn btn-outline btn-full" onclick="alert('Social sign-in will be available once accounts are live.')">
+        Continue with Google
+      </button>
+
+      <p class="auth-switch">
+        Don't have an account? <a href="register.html">Create one</a>
+      </p>
+    </div>
+  </main>
+
+  <script src="js/data.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

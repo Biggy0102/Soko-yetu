@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ - Soko Yetu</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="auth-header">
+    <div class="container auth-header-inner">
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="Soko Yetu" class="logo-img" id="logoImg" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='inline-flex';">
+        <span class="logo-fallback" id="logoFallback">Soko<span class="accent">Yetu</span></span>
+      </a>
+    </div>
+  </header>
+
+  <main class="container static-page">
+
+    <nav class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span>›</span>
+      <span class="breadcrumb-current">FAQ</span>
+    </nav>
+
+    <h1 class="static-page-title">Frequently asked questions</h1>
+    <p class="static-page-updated">Quick answers to common questions about Soko Yetu.</p>
+
+    <div class="faq-list" id="faqList">
+
+      <div class="faq-item">
+        <button type="button" class="faq-question" onclick="toggleFaq(this)">
+          Is Soko Yetu free to use?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-answer">
+          <p>Yes — browsing listings and posting standard ads is completely free. Optional paid features, like boosting an ad's visibility, may be introduced later, and will always be clearly priced before you pay anything.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-question" onclick="toggleFaq(this)">
+          Which countries does Soko Yetu cover?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-answer">
+          <p>Kenya, Uganda, Tanzania, Rwanda, Congo (DRC), Burundi, South Sudan, Somalia, and Ethiopia. Each country's listings show prices in the local currency.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-question" onclick="toggleFaq(this)">
+          How do I post an ad?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-answer">
+          <p>Tap "SELL" at the top of any page. You'll be guided through a short form: choose your category, add details and price, add photos, confirm your location, and review before posting.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-question" onclick="toggleFaq(this)">
+          Why can't I see my account or ads after refreshing the page?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-answer">
+          <p>Soko Yetu is currently in active development. Account creation and ad posting work fully in your browser right now, but since the permanent backend storage isn't connected yet, this data is only kept for your current browser session. Once the backend is live, everything will be saved permanently to your real account.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-question" onclick="toggleFaq(this)">
+          How do I contact a seller?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-answer">
+          <p>On any listing, use "Show contact" to reveal the seller's phone number, or "Start chat" to message them directly through the platform.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-question" onclick="toggleFaq(this)">
+          Why is the seller's phone number hidden by default?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-answer">
+          <p>Phone numbers are masked until you choose to reveal them. This protects sellers from automated scraping and spam, while still making it easy for genuine buyers to get in touch.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-question" onclick="toggleFaq(this)">
+          How do I know if a listing is safe to buy from?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-answer">
+          <p>Look for the "Verified" badge on a seller's profile, check their feedback count and member-since date, and always follow the safety tips shown on every listing — meet in public, inspect before paying, and never send money in advance. See our full <a href="safety-tips.html">Safety Tips</a> page for more.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-question" onclick="toggleFaq(this)">
+          What should I do if I suspect a scam?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-answer">
+          <p>Use the "Report this ad" button on the listing, and avoid going through with any payment. If you've already lost money, contact your mobile money provider or bank immediately, as well as local authorities.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-question" onclick="toggleFaq(this)">
+          Can I edit or delete an ad after posting it?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-answer">
+          <p>Yes — go to "My Ads" from your account menu, find the ad, and use Edit or Delete. You can also mark an ad as "Sold" once it's no longer available.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-question" onclick="toggleFaq(this)">
+          Will Soko Yetu support mobile money payments?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-answer">
+          <p>Support for mobile money (like M-Pesa and others used across the region) is planned for a future phase, primarily for optional paid features like ad boosting — not for payments between buyers and sellers, which will continue to happen directly between users.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="faq-still-need-help">
+      <h3>Still need help?</h3>
+      <p>Can't find what you're looking for?</p>
+      <a href="contact.html" class="btn btn-primary">Contact us</a>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="skyline"></div>
+    <div class="footer-body">
+      <div class="container footer-inner">
+        <div class="footer-col">
+          <h4>About us</h4>
+          <a href="about.html">About Soko Yetu</a>
+          <a href="#">We are hiring!</a>
+          <a href="terms.html">Terms & Conditions</a>
+          <a href="privacy.html">Privacy Policy</a>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <a href="contact.html">support@sokoyetu.africa</a>
+          <a href="safety-tips.html">Safety tips</a>
+          <a href="contact.html">Contact us</a>
+          <a href="faq.html">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h4>For sellers</h4>
+          <a href="post-ad.html">Post an ad</a>
+          <a href="faq.html">Selling tips</a>
+          <a href="#">Boost your ad</a>
+        </div>
+        <div class="footer-col">
+          <h4>Our resources</h4>
+          <a href="#">Soko Yetu on Facebook</a>
+          <a href="#">Our Instagram</a>
+          <a href="#">Our YouTube</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Soko Yetu. Built for East Africa.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function toggleFaq(button) {
+      const item = button.closest(".faq-item");
+      const isOpen = item.classList.contains("open");
+
+      // Accordion: close any other open item first
+      document.querySelectorAll(".faq-item.open").forEach(openItem => {
+        if (openItem !== item) openItem.classList.remove("open");
+      });
+
+      item.classList.toggle("open", !isOpen);
+    }
+  </script>
+</body>
+</html>

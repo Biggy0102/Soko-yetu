@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Ads - Soko Yetu</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header">
+    <div class="header-top">
+      <div class="container header-top-inner">
+        <a href="index.html" class="logo">
+          <img src="images/logo.png" alt="Soko Yetu" class="logo-img" id="logoImg" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='inline-flex';">
+          <span class="logo-fallback" id="logoFallback">Soko<span class="accent">Yetu</span></span>
+        </a>
+
+        <div class="header-right">
+          <span class="tagline">SELL FASTER, BUY SMARTER</span>
+
+          <div class="icon-nav" id="iconNav">
+            <div class="icon-item">
+              <button type="button" class="icon-btn" onclick="toggleIconPanel('saved')" aria-label="Saved ads">🔖</button>
+              <div class="icon-panel" id="panel-saved">
+                <h4>Saved ads</h4>
+                <p class="icon-panel-empty">You haven't saved any ads yet. Tap the heart on a listing to save it here.</p>
+              </div>
+            </div>
+
+            <div class="icon-item">
+              <button type="button" class="icon-btn" onclick="toggleIconPanel('messages')" aria-label="Messages">
+                💬<span class="icon-dot"></span>
+              </button>
+              <div class="icon-panel" id="panel-messages">
+                <h4>Messages</h4>
+                <div class="icon-panel-row">
+                  <span class="icon-panel-avatar">J</span>
+                  <div>
+                    <div class="icon-panel-row-title">James M.</div>
+                    <div class="icon-panel-row-sub">Toyota Axio 2014 — "Thanks for reaching out!"</div>
+                  </div>
+                </div>
+                <p class="icon-panel-note">Full messaging is coming once accounts are live.</p>
+              </div>
+            </div>
+
+            <div class="icon-item">
+              <button type="button" class="icon-btn" onclick="toggleIconPanel('alerts')" aria-label="Notifications">🔔</button>
+              <div class="icon-panel" id="panel-alerts">
+                <h4>Notifications</h4>
+                <p class="icon-panel-empty">No new notifications right now.</p>
+              </div>
+            </div>
+
+            <div class="icon-item">
+              <button type="button" class="icon-btn" onclick="toggleIconPanel('myads')" aria-label="My ads">📋</button>
+              <div class="icon-panel" id="panel-myads">
+                <h4>My ads</h4>
+                <p class="icon-panel-empty">You're already here! See your ads below.</p>
+              </div>
+            </div>
+
+            <div class="icon-item">
+              <a href="settings.html" class="icon-btn" aria-label="Settings">⚙️</a>
+            </div>
+
+            <div class="icon-item">
+              <button type="button" class="icon-btn icon-btn-account" onclick="toggleIconPanel('account')" aria-label="Account">👤</button>
+              <div class="icon-panel" id="panel-account">
+                <h4>Your account</h4>
+                <a href="settings.html" class="btn btn-outline btn-full">Settings</a>
+                <a href="login.html" class="btn btn-outline btn-full">Sign in</a>
+                <a href="register.html" class="btn btn-primary btn-full">Create account</a>
+              </div>
+            </div>
+          </div>
+
+          <a href="post-ad.html" class="btn btn-primary">SELL</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="container dashboard-page">
+
+    <div class="dashboard-header-row">
+      <div>
+        <h1 class="dashboard-heading">My ads</h1>
+        <p class="dashboard-subtext">Manage the ads you've posted on Soko Yetu.</p>
+      </div>
+      <a href="post-ad.html" class="btn btn-primary">+ Post a new ad</a>
+    </div>
+
+    <div class="phase1-note dashboard-phase-note">
+      Phase 1 note: ads shown here are either sample data or ads you've posted in this browser session. Once the backend is connected, this will show your real account's ads, saved permanently.
+    </div>
+
+    <!-- Stat cards -->
+    <div class="dashboard-stats" id="dashboardStats"></div>
+
+    <!-- Status filter tabs -->
+    <div class="dashboard-tabs" id="dashboardTabs"></div>
+
+    <!-- Ads list -->
+    <div class="dashboard-ads-list" id="dashboardAdsList"></div>
+
+  </main>
+
+  <!-- ===== EDIT AD MODAL ===== -->
+  <div class="modal-overlay" id="editAdModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Edit ad</h3>
+        <button type="button" class="modal-close" onclick="closeEditModal()">✕</button>
+      </div>
+      <label class="field-label">Title</label>
+      <input type="text" id="editAdTitle" class="field-input" maxlength="120">
+      <div class="field-hint" id="editTitleCount">0 / 120</div>
+
+      <label class="field-label">Price</label>
+      <input type="number" id="editAdPrice" class="field-input" min="0">
+
+      <label class="field-label">Description</label>
+      <textarea id="editAdDescription" class="field-textarea" rows="4" maxlength="1500"></textarea>
+      <div class="field-hint" id="editDescCount">0 / 1500</div>
+
+      <button type="button" class="btn btn-primary btn-full" onclick="saveEditedAd()">Save changes</button>
+      <p class="modal-confirm" id="editConfirm" style="display:none;">Changes saved.</p>
+    </div>
+  </div>
+
+  <!-- ===== DELETE CONFIRM MODAL ===== -->
+  <div class="modal-overlay" id="deleteAdModal">
+    <div class="modal-box modal-box-small">
+      <div class="modal-header">
+        <h3>Delete this ad?</h3>
+        <button type="button" class="modal-close" onclick="closeDeleteModal()">✕</button>
+      </div>
+      <p class="modal-subtext">This can't be undone. The ad will be removed from My Ads.</p>
+      <div class="action-row">
+        <button type="button" class="btn btn-outline btn-half" onclick="closeDeleteModal()">Cancel</button>
+        <button type="button" class="btn btn-primary btn-half btn-danger-solid" onclick="confirmDeleteAd()">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

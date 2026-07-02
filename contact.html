@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Soko Yetu</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="auth-header">
+    <div class="container auth-header-inner">
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="Soko Yetu" class="logo-img" id="logoImg" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='inline-flex';">
+        <span class="logo-fallback" id="logoFallback">Soko<span class="accent">Yetu</span></span>
+      </a>
+    </div>
+  </header>
+
+  <main class="container static-page">
+
+    <nav class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span>›</span>
+      <span class="breadcrumb-current">Contact Us</span>
+    </nav>
+
+    <h1 class="static-page-title">Get in touch</h1>
+    <p class="static-page-updated">Questions, feedback, or partnership ideas — we'd love to hear from you.</p>
+
+    <div class="contact-layout">
+
+      <div class="contact-form-card">
+        <div class="phase1-note">
+          Phase 1 note: this form doesn't send anywhere yet since there's no backend connected. Once it's live, messages sent here will reach our support team directly.
+        </div>
+
+        <form id="contactForm" onsubmit="return false;">
+          <label class="field-label">Your name</label>
+          <input type="text" id="contactName" class="field-input" placeholder="e.g. James Mwangi">
+          <div class="field-error" id="contactNameError"></div>
+
+          <label class="field-label">Email</label>
+          <input type="email" id="contactEmail" class="field-input" placeholder="you@email.com">
+          <div class="field-error" id="contactEmailError"></div>
+
+          <label class="field-label">What's this about?</label>
+          <select id="contactReason" class="field-input">
+            <option value="general">General question</option>
+            <option value="account">Account help</option>
+            <option value="report">Reporting an ad or user</option>
+            <option value="partnership">Partnership / business inquiry</option>
+            <option value="feedback">Feedback or suggestion</option>
+          </select>
+
+          <label class="field-label">Message</label>
+          <textarea id="contactMessage" class="field-textarea" rows="5" placeholder="How can we help?" maxlength="1500"></textarea>
+          <div class="field-error" id="contactMessageError"></div>
+
+          <button type="button" class="btn btn-primary btn-full btn-lg" onclick="submitContactForm()">Send message</button>
+          <p class="modal-confirm" id="contactConfirm" style="display:none;">Thanks for reaching out! In Phase 1 this isn't sent anywhere yet, but once the backend is live, your message will go straight to our support team.</p>
+        </form>
+      </div>
+
+      <div class="contact-info-card">
+        <h3>Other ways to reach us</h3>
+        <div class="contact-info-row">
+          <span class="contact-info-icon">✉️</span>
+          <div>
+            <div class="contact-info-label">Email</div>
+            <div class="contact-info-value">support@sokoyetu.africa</div>
+          </div>
+        </div>
+        <div class="contact-info-row">
+          <span class="contact-info-icon">⏱️</span>
+          <div>
+            <div class="contact-info-label">Response time</div>
+            <div class="contact-info-value">Usually within 1-2 business days</div>
+          </div>
+        </div>
+        <div class="contact-info-row">
+          <span class="contact-info-icon">❓</span>
+          <div>
+            <div class="contact-info-label">Common questions</div>
+            <div class="contact-info-value"><a href="faq.html">Check our FAQ</a> first — your answer might already be there</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="skyline"></div>
+    <div class="footer-body">
+      <div class="container footer-inner">
+        <div class="footer-col">
+          <h4>About us</h4>
+          <a href="about.html">About Soko Yetu</a>
+          <a href="#">We are hiring!</a>
+          <a href="terms.html">Terms & Conditions</a>
+          <a href="privacy.html">Privacy Policy</a>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <a href="contact.html">support@sokoyetu.africa</a>
+          <a href="safety-tips.html">Safety tips</a>
+          <a href="contact.html">Contact us</a>
+          <a href="faq.html">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h4>For sellers</h4>
+          <a href="post-ad.html">Post an ad</a>
+          <a href="faq.html">Selling tips</a>
+          <a href="#">Boost your ad</a>
+        </div>
+        <div class="footer-col">
+          <h4>Our resources</h4>
+          <a href="#">Soko Yetu on Facebook</a>
+          <a href="#">Our Instagram</a>
+          <a href="#">Our YouTube</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Soko Yetu. Built for East Africa.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function submitContactForm() {
+      const name = document.getElementById("contactName").value.trim();
+      const email = document.getElementById("contactEmail").value.trim();
+      const message = document.getElementById("contactMessage").value.trim();
+
+      document.getElementById("contactNameError").textContent = "";
+      document.getElementById("contactEmailError").textContent = "";
+      document.getElementById("contactMessageError").textContent = "";
+
+      let hasError = false;
+      if (!name) {
+        document.getElementById("contactNameError").textContent = "Please enter your name.";
+        hasError = true;
+      }
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        document.getElementById("contactEmailError").textContent = "Please enter a valid email address.";
+        hasError = true;
+      }
+      if (!message) {
+        document.getElementById("contactMessageError").textContent = "Please enter a message.";
+        hasError = true;
+      }
+      if (hasError) return;
+
+      document.getElementById("contactForm").style.display = "none";
+      document.getElementById("contactConfirm").style.display = "block";
+    }
+  </script>
+</body>
+</html>

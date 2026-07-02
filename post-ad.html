@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post an Ad - Soko Yetu</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header">
+    <div class="header-top">
+      <div class="container header-top-inner">
+        <a href="index.html" class="logo">
+          <img src="images/logo.png" alt="Soko Yetu" class="logo-img" id="logoImg" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='inline-flex';">
+          <span class="logo-fallback" id="logoFallback">Soko<span class="accent">Yetu</span></span>
+        </a>
+
+        <div class="header-right">
+          <span class="tagline">SELL FASTER, BUY SMARTER</span>
+
+          <div class="icon-nav" id="iconNav">
+            <div class="icon-item">
+              <button type="button" class="icon-btn" onclick="toggleIconPanel('saved')" aria-label="Saved ads">🔖</button>
+              <div class="icon-panel" id="panel-saved">
+                <h4>Saved ads</h4>
+                <p class="icon-panel-empty">You haven't saved any ads yet. Tap the heart on a listing to save it here.</p>
+              </div>
+            </div>
+
+            <div class="icon-item">
+              <button type="button" class="icon-btn" onclick="toggleIconPanel('messages')" aria-label="Messages">
+                💬<span class="icon-dot"></span>
+              </button>
+              <div class="icon-panel" id="panel-messages">
+                <h4>Messages</h4>
+                <div class="icon-panel-row">
+                  <span class="icon-panel-avatar">J</span>
+                  <div>
+                    <div class="icon-panel-row-title">James M.</div>
+                    <div class="icon-panel-row-sub">Toyota Axio 2014 — "Thanks for reaching out!"</div>
+                  </div>
+                </div>
+                <p class="icon-panel-note">Full messaging is coming once accounts are live.</p>
+              </div>
+            </div>
+
+            <div class="icon-item">
+              <button type="button" class="icon-btn" onclick="toggleIconPanel('alerts')" aria-label="Notifications">🔔</button>
+              <div class="icon-panel" id="panel-alerts">
+                <h4>Notifications</h4>
+                <p class="icon-panel-empty">No new notifications right now.</p>
+              </div>
+            </div>
+
+            <div class="icon-item">
+              <button type="button" class="icon-btn" onclick="toggleIconPanel('myads')" aria-label="My ads">📋</button>
+              <div class="icon-panel" id="panel-myads">
+                <h4>My ads</h4>
+                <p class="icon-panel-empty">Sign in to see and manage the ads you've posted.</p>
+                <a href="login.html" class="btn btn-outline btn-full">Sign in</a>
+              </div>
+            </div>
+
+            <div class="icon-item">
+              <a href="settings.html" class="icon-btn" aria-label="Settings">⚙️</a>
+            </div>
+
+            <div class="icon-item">
+              <button type="button" class="icon-btn icon-btn-account" onclick="toggleIconPanel('account')" aria-label="Account">👤</button>
+              <div class="icon-panel" id="panel-account">
+                <h4>Your account</h4>
+                <a href="settings.html" class="btn btn-outline btn-full">Settings</a>
+                <a href="login.html" class="btn btn-outline btn-full">Sign in</a>
+                <a href="register.html" class="btn btn-primary btn-full">Create account</a>
+              </div>
+            </div>
+          </div>
+
+          <a href="post-ad.html" class="btn btn-primary">SELL</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="container post-ad-page">
+
+    <h1 class="post-ad-heading">Post an ad</h1>
+
+    <!-- Step progress indicator -->
+    <div class="step-tracker" id="stepTracker">
+      <div class="step-dot-wrap" data-step="1">
+        <div class="step-dot">1</div>
+        <span class="step-label">Category</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step-dot-wrap" data-step="2">
+        <div class="step-dot">2</div>
+        <span class="step-label">Details</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step-dot-wrap" data-step="3">
+        <div class="step-dot">3</div>
+        <span class="step-label">Photos</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step-dot-wrap" data-step="4">
+        <div class="step-dot">4</div>
+        <span class="step-label">Location</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step-dot-wrap" data-step="5">
+        <div class="step-dot">5</div>
+        <span class="step-label">Review</span>
+      </div>
+    </div>
+
+    <form id="postAdForm" class="post-ad-form" onsubmit="return false;">
+
+      <!-- STEP 1: Category -->
+      <section class="form-step" id="step1" data-step="1">
+        <h2>What are you selling?</h2>
+        <p class="step-subtext">Choose the category that best fits your ad.</p>
+        <div class="category-pick-grid" id="categoryPickGrid"></div>
+
+        <label class="field-label">Which country is this ad for?</label>
+        <select id="adCountryStep1" class="field-input"></select>
+      </section>
+
+      <!-- STEP 2: Details -->
+      <section class="form-step" id="step2" data-step="2" style="display:none;">
+        <h2>Tell us more</h2>
+        <p class="step-subtext" id="step2CategoryRef"></p>
+
+        <label class="field-label">Ad title</label>
+        <input type="text" id="adTitle" class="field-input" placeholder="e.g. Toyota Axio 2014, clean, low mileage" maxlength="120">
+        <div class="field-hint" id="titleCount">0 / 120</div>
+
+        <label class="field-label" id="priceFieldLabel">Price</label>
+        <input type="number" id="adPrice" class="field-input" placeholder="e.g. 1450000" min="0">
+        <label class="checkbox-label">
+          <input type="checkbox" id="adNegotiable"> Price is negotiable
+        </label>
+
+        <label class="field-label">Description</label>
+        <textarea id="adDescription" class="field-textarea" rows="5" placeholder="Describe condition, features, reason for selling..." maxlength="1500"></textarea>
+        <div class="field-hint" id="descCount">0 / 1500</div>
+
+        <div id="specFieldsContainer"></div>
+      </section>
+
+      <!-- STEP 3: Photos -->
+      <section class="form-step" id="step3" data-step="3" style="display:none;">
+        <h2>Add photos</h2>
+        <p class="step-subtext">Ads with photos get up to 5x more views. Add at least 1 photo.</p>
+
+        <div class="photo-upload-grid" id="photoUploadGrid"></div>
+        <input type="file" id="photoFileInput" accept="image/*" multiple style="display:none;">
+        <p class="photo-note">Phase 1 note: photos are previewed here only — uploading to permanent storage comes with the backend phase.</p>
+      </section>
+
+      <!-- STEP 4: Location -->
+      <section class="form-step" id="step4" data-step="4" style="display:none;">
+        <h2>Where is this ad located?</h2>
+
+        <label class="field-label">Country</label>
+        <select id="adCountry" class="field-input"></select>
+
+        <label class="field-label">City / Town</label>
+        <input type="text" id="adCity" class="field-input" placeholder="e.g. Nairobi">
+
+        <label class="field-label">Your phone number</label>
+        <div class="phone-input-group">
+          <span class="phone-prefix" id="adPhonePrefix">+254</span>
+          <input type="tel" id="adPhone" class="field-input phone-input-rest" placeholder="712345678">
+        </div>
+
+        <label class="field-label">Your name</label>
+        <input type="text" id="adSellerName" class="field-input" placeholder="e.g. James M.">
+      </section>
+
+      <!-- STEP 5: Review -->
+      <section class="form-step" id="step5" data-step="5" style="display:none;">
+        <h2>Review your ad</h2>
+        <p class="step-subtext">Check everything looks right before posting.</p>
+        <div class="review-card" id="reviewCard"></div>
+      </section>
+
+      <!-- Navigation buttons -->
+      <div class="form-nav-row">
+        <button type="button" class="btn btn-outline" id="backBtn" onclick="goToStep(currentStep - 1)">← Back</button>
+        <button type="button" class="btn btn-primary" id="nextBtn" onclick="handleNextClick()">Continue →</button>
+      </div>
+
+    </form>
+
+    <!-- Success state, shown after submit -->
+    <div class="post-success" id="postSuccess" style="display:none;">
+      <div class="post-success-icon">✅</div>
+      <h2>Your ad has been submitted!</h2>
+      <p>It's marked as <strong>pending review</strong> in My Ads — in Phase 1, it's only visible in your browser for this session. Once the backend is live, it'll go through real review and become visible to everyone.</p>
+      <div class="post-success-actions">
+        <a href="dashboard.html" class="btn btn-primary">View my ads</a>
+        <a href="index.html" class="btn btn-outline">Back to home</a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="skyline"></div>
+    <div class="footer-body">
+      <div class="container footer-inner">
+        <div class="footer-col">
+          <h4>About us</h4>
+          <a href="about.html">About Soko Yetu</a>
+          <a href="#">We are hiring!</a>
+          <a href="terms.html">Terms & Conditions</a>
+          <a href="privacy.html">Privacy Policy</a>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <a href="contact.html">support@sokoyetu.africa</a>
+          <a href="safety-tips.html">Safety tips</a>
+          <a href="contact.html">Contact us</a>
+          <a href="faq.html">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h4>For sellers</h4>
+          <a href="post-ad.html">Post an ad</a>
+          <a href="faq.html">Selling tips</a>
+          <a href="#">Boost your ad</a>
+        </div>
+        <div class="footer-col">
+          <h4>Our resources</h4>
+          <a href="#">Soko Yetu on Facebook</a>
+          <a href="#">Our Instagram</a>
+          <a href="#">Our YouTube</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Soko Yetu. Built for East Africa.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/post-ad.js"></script>
+</body>
+</html>

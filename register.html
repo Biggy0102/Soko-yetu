@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account - Soko Yetu</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== SIMPLE AUTH HEADER ===== -->
+  <header class="auth-header">
+    <div class="container auth-header-inner">
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="Soko Yetu" class="logo-img" id="logoImg" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='inline-flex';">
+        <span class="logo-fallback" id="logoFallback">Soko<span class="accent">Yetu</span></span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="auth-page">
+    <div class="auth-card">
+
+      <h1 class="auth-heading">Create your account</h1>
+      <p class="auth-subtext">Join Soko Yetu to start buying and selling across East Africa.</p>
+
+      <div class="phase1-note">
+        Phase 1 note: account creation here is for preview only — nothing is saved yet. This becomes a real, working signup once the backend is connected.
+      </div>
+
+      <form id="registerForm" onsubmit="return false;">
+        <label class="field-label">Full name</label>
+        <input type="text" id="regName" class="field-input" placeholder="e.g. James Mwangi">
+        <div class="field-error" id="regNameError"></div>
+
+        <label class="field-label">Country</label>
+        <select id="regCountry" class="field-input"></select>
+
+        <label class="field-label">Phone number</label>
+        <div class="phone-input-group">
+          <span class="phone-prefix" id="regPhonePrefix">+254</span>
+          <input type="tel" id="regPhone" class="field-input phone-input-rest" placeholder="712345678">
+        </div>
+        <div class="field-error" id="regPhoneError"></div>
+
+        <label class="field-label">Email (optional)</label>
+        <input type="email" id="regEmail" class="field-input" placeholder="you@email.com">
+        <div class="field-error" id="regEmailError"></div>
+
+        <label class="field-label">Password</label>
+        <div class="password-field-wrap">
+          <input type="password" id="regPassword" class="field-input" placeholder="At least 6 characters">
+          <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('regPassword', this)">Show</button>
+        </div>
+        <div class="password-strength" id="passwordStrength"></div>
+        <div class="field-error" id="regPasswordError"></div>
+
+        <label class="field-label">Confirm password</label>
+        <div class="password-field-wrap">
+          <input type="password" id="regPasswordConfirm" class="field-input" placeholder="Re-enter your password">
+          <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('regPasswordConfirm', this)">Show</button>
+        </div>
+        <div class="field-error" id="regPasswordConfirmError"></div>
+
+        <label class="checkbox-label checkbox-label-terms">
+          <input type="checkbox" id="agreeTerms">
+          I agree to the <a href="#" onclick="return false;">Terms & Conditions</a> and <a href="#" onclick="return false;">Privacy Policy</a>
+        </label>
+        <div class="field-error" id="agreeTermsError"></div>
+
+        <button type="button" class="btn btn-primary btn-full btn-lg" onclick="handleRegister()">Create account</button>
+      </form>
+
+      <div class="auth-divider"><span>or</span></div>
+
+      <button type="button" class="btn btn-outline btn-full" onclick="alert('Social sign-up will be available once accounts are live.')">
+        Continue with Google
+      </button>
+
+      <p class="auth-switch">
+        Already have an account? <a href="login.html">Sign in</a>
+      </p>
+    </div>
+  </main>
+
+  <!-- Success modal shown after "creating" the account -->
+  <div class="modal-overlay" id="registerSuccessModal">
+    <div class="modal-box modal-box-small">
+      <div class="modal-header">
+        <h3>Account created!</h3>
+      </div>
+      <p class="modal-subtext" id="registerSuccessText"></p>
+      <a href="index.html" class="btn btn-primary btn-full">Continue to Soko Yetu</a>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>
