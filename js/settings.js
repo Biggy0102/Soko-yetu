@@ -175,12 +175,17 @@ function showConfirm(elementId) {
 
 // ===== INIT =====
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
   // Redirect to login if not authenticated
   if (!isLoggedIn()) {
     window.location.href = "login.html?redirect=settings.html";
     return;
   }
+
+  // main.js's own DOMContentLoaded handler also calls this, but that runs
+  // independently and may not finish before we need COUNTRIES here - so we
+  // await it ourselves too rather than race against it.
+  await loadReferenceData();
 
   renderSettingsCountrySelect();
 

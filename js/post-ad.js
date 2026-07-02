@@ -184,16 +184,31 @@ function saveStepData(step) {
 }
 
 // ===== STEP 1: CATEGORY PICKER =====
+// Subcategories expand inline, directly under the selected category card,
+// using the .subcategory-pick-grid-inline / .subcategory-pick-chip styles
+// that already exist in style.css.
 
 function renderCategoryPicker() {
   const grid = document.getElementById("categoryPickGrid");
-  grid.innerHTML = CATEGORIES.map(cat => `
-    <button type="button" class="category-pick-btn ${postAdState.category === cat.id ? 'selected' : ''}"
-      onclick="selectCategory('${cat.id}')">
-      <span class="category-pick-icon">${cat.icon}</span>
-      <span class="category-pick-name">${cat.name}</span>
-    </button>
-  `).join("");
+  grid.innerHTML = CATEGORIES.map(cat => {
+    const cardHtml = `
+      <button type="button" class="category-pick-card ${postAdState.category === cat.id ? 'selected' : ''}"
+        onclick="selectCategory('${cat.id}')">
+        <span class="category-pick-icon">${cat.icon}</span>
+        <span class="category-pick-name">${cat.name}</span>
+      </button>
+    `;
+
+    if (postAdState.category === cat.id && cat.subcategories && cat.subcategories.length > 0) {
+      const chips = cat.subcategories.map(sub => `
+        <button type="button" class="subcategory-pick-chip ${postAdState.sub === sub.id ? 'selected' : ''}"
+          onclick="selectSubcategory('${sub.id}')">${sub.name}</button>
+      `).join("");
+      return cardHtml + `<div class="subcategory-pick-grid-inline">${chips}</div>`;
+    }
+
+    return cardHtml;
+  }).join("");
 }
 
 function selectCategory(catId) {
@@ -201,36 +216,17 @@ function selectCategory(catId) {
   postAdState.sub = null;
   postAdState.specs = {};
 
-  document.querySelectorAll(".category-pick-btn").forEach(btn => btn.classList.remove("selected"));
-  const selected = document.querySelector(`[onclick="selectCategory('${catId}')"]`);
-  if (selected) selected.classList.add("selected");
+  renderCategoryPicker(); // re-render so the subcategory chips appear under the newly selected card
 
-  const cat = CATEGORIES.find(c => c.id === catId);
-  const subContainer = document.getElementById("subcategoryContainer");
-  const subGrid = document.getElementById("subcategoryGrid");
   const titleInput = document.getElementById("adTitle");
   const priceInput = document.getElementById("adPrice");
-
-  if (cat && cat.subcategories && cat.subcategories.length > 0) {
-    subContainer.style.display = "block";
-    subGrid.innerHTML = cat.subcategories.map(sub => `
-      <button type="button" class="subcategory-btn" onclick="selectSubcategory('${sub.id}')">
-        ${sub.name}
-      </button>
-    `).join("");
-  } else {
-    subContainer.style.display = "none";
-  }
-
   if (titleInput) titleInput.placeholder = TITLE_EXAMPLES[catId] || "e.g. Item for sale";
   if (priceInput) priceInput.placeholder = PRICE_EXAMPLES[catId] || "0";
 }
 
 function selectSubcategory(subId) {
   postAdState.sub = subId;
-  document.querySelectorAll(".subcategory-btn").forEach(btn => btn.classList.remove("selected"));
-  const selected = document.querySelector(`[onclick="selectSubcategory('${subId}')"]`);
-  if (selected) selected.classList.add("selected");
+  renderCategoryPicker(); // re-render to move the "selected" highlight to the chosen chip
 }
 
 // ===== STEP 2: SPEC FIELDS =====
@@ -460,12 +456,17 @@ async function submitAd() {
 
 // ===== INIT =====
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
   // Redirect to login if not authenticated
   if (!isLoggedIn()) {
     window.location.href = "login.html?redirect=post-ad.html";
     return;
   }
+
+  // main.js's own DOMContentLoaded handler also calls this, but that runs
+  // independently and may not finish before we need CATEGORIES/COUNTRIES
+  // here - so we await it ourselves too rather than race against it.
+  await loadReferenceData();
 
   renderCategoryPicker();
   renderAdCountrySelect();

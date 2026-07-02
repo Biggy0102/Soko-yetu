@@ -140,7 +140,12 @@ function setupBrowseControls() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
+  // main.js's own DOMContentLoaded handler also calls this, but that runs
+  // independently and isn't guaranteed to finish before renderBrowseResults
+  // needs CATEGORIES/COUNTRIES for filter labels - so we await it ourselves.
+  await loadReferenceData();
+
   syncFilterControls();
   setupBrowseControls();
   renderBrowseResults();
