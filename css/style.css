@@ -1152,15 +1152,9 @@ img {
 /* ===== HEADER ICON NAV ===== */
 
 .icon-nav {
-  display: none;
+  display: flex;
   align-items: center;
   gap: 4px;
-}
-
-@media (min-width: 768px) {
-  .icon-nav {
-    display: flex;
-  }
 }
 
 .icon-item {
@@ -1214,6 +1208,16 @@ img {
 
 .icon-panel.open {
   display: block;
+}
+
+@media (max-width: 480px) {
+  .icon-panel {
+    position: fixed;
+    top: 64px;
+    left: 16px;
+    right: 16px;
+    width: auto;
+  }
 }
 
 .icon-panel h4 {
