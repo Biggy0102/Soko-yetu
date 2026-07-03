@@ -151,6 +151,7 @@ async function renderDashboard() {
 
 let editingAdId = null;
 let editCountersInitialized = false;
+let editPhotos = []; // current photo URLs for the ad being edited (existing + newly uploaded)
 
 function openEditModal(id) {
   const ad = myAds.find(a => a.id === id);
@@ -162,7 +163,10 @@ function openEditModal(id) {
 
   titleInput.value = ad.title;
   document.getElementById("editAdPrice").value = ad.price;
+  
   descInput.value = ad.description || "";
+  editPhotos = Array.isArray(ad.photos) ? [...ad.photos] : [];
+  renderEditPhotoGrid();
   document.getElementById("editConfirm").style.display = "none";
 
   document.getElementById("editTitleCount").textContent = titleInput.value.length + " / " + titleInput.maxLength;
@@ -185,6 +189,58 @@ function closeEditModal() {
   document.getElementById("editAdModal").classList.remove("open");
 }
 
+// ===== EDIT MODAL: PHOTOS =====
+
+function renderEditPhotoGrid() {
+  const grid = document.getElementById("editPhotoGrid");
+  grid.innerHTML = editPhotos.map((url, i) => `
+    <div class="edit-photo-thumb">
+      <img src="${url}" alt="Ad photo ${i + 1}">
+      <button type="button" class="edit-photo-remove" onclick="removeEditPhoto(${i})" aria-label="Remove photo">✕</button>
+    </div>
+  `).join("");
+
+  document.getElementById("editPhotoCount").textContent = `${editPhotos.length} / 8 photos`;
+  const addBtn = document.querySelector(".edit-photo-add-btn");
+  const addInput = document.getElementById("editPhotoInput");
+  const atLimit = editPhotos.length >= 8;
+  addInput.disabled = atLimit;
+  addBtn.style.opacity = atLimit ? 0.5 : 1;
+  addBtn.style.pointerEvents = atLimit ? "none" : "auto";
+}
+
+function removeEditPhoto(index) {
+  editPhotos.splice(index, 1);
+  renderEditPhotoGrid();
+}
+
+async function handleEditPhotoSelect(event) {
+  const files = Array.from(event.target.files || []);
+  if (files.length === 0) return;
+
+  const remainingSlots = 8 - editPhotos.length;
+  const filesToUpload = files.slice(0, remainingSlots);
+
+  const formData = new FormData();
+  filesToUpload.forEach(file => formData.append("photos", file));
+
+  try {
+    const uploadRes = await fetch(`${API}/upload`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${getToken()}` },
+      body: formData,
+    });
+    if (!uploadRes.ok) throw new Error("Photo upload failed");
+    const uploadData = await uploadRes.json();
+    editPhotos.push(...(uploadData.urls || []));
+    renderEditPhotoGrid();
+  } catch (err) {
+    alert("Could not upload photo(s). Please try again.");
+  } finally {
+    event.target.value = "";
+  }
+}
+
 async function saveEditedAd() {
   const title = document.getElementById("editAdTitle").value.trim();
   const price = document.getElementById("editAdPrice").value;
@@ -202,7 +258,7 @@ async function saveEditedAd() {
         "Content-Type": "application/json",
         Authorization: `Bearer ${getToken()}`,
       },
-      body: JSON.stringify({ title, price: Number(price), description }),
+      body: JSON.stringify({ title, price: Number(price), description, photoUrls: editPhotos }),
     });
 
     if (!res.ok) throw new Error("Update failed");

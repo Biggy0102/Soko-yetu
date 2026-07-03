@@ -122,6 +122,14 @@
       <textarea id="editAdDescription" class="field-textarea" rows="4" maxlength="1500"></textarea>
       <div class="field-hint" id="editDescCount">0 / 1500</div>
 
+      <label class="field-label">Photos</label>
+      <div class="edit-photo-grid" id="editPhotoGrid">
+        <!-- filled by JS: existing photo thumbnails with a remove button -->
+      </div>
+      <label class="btn btn-outline btn-full edit-photo-add-btn" for="editPhotoInput">Add photos</label>
+      <input type="file" id="editPhotoInput" accept="image/*" multiple style="display:none;" onchange="handleEditPhotoSelect(event)">
+      <div class="field-hint" id="editPhotoCount">0 / 8 photos</div>
+
       <button type="button" class="btn btn-primary btn-full" onclick="saveEditedAd()">Save changes</button>
       <p class="modal-confirm" id="editConfirm" style="display:none;">Changes saved.</p>
     </div>
