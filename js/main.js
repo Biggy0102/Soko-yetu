@@ -131,6 +131,20 @@ function renderCountrySelect() {
   ).join("");
 }
 
+// ===== RENDER: CATEGORY GRID (Jiji-style, homepage only) =====
+
+function renderCategoryGrid() {
+  const grid = document.getElementById("categoryGrid");
+  if (!grid) return;
+
+  grid.innerHTML = CATEGORIES.map(cat => `
+    <a href="browse.html?category=${cat.id}" class="category-grid-item">
+      <span class="category-grid-icon">${cat.icon}</span>
+      <span class="category-grid-label">${cat.name}</span>
+    </a>
+  `).join("");
+}
+
 // ===== RENDER: CATEGORY SIDEBAR =====
 
 function renderCategorySidebar() {
@@ -327,6 +341,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   await loadReferenceData();
   renderCountrySelect();
   renderCategorySidebar();
+  renderCategoryGrid();
   setupSearchForm();
   updateHeaderAuthState();
   loadHomepageListings();
