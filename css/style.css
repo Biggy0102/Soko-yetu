@@ -2921,3 +2921,35 @@ img {
   cursor: pointer;
   margin-bottom: 4px;
 }
+/* ===== LISTING DETAIL: PHOTO GALLERY THUMBNAILS ===== */
+
+.listing-media-thumbs {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.listing-media-thumb {
+  flex: 0 0 auto;
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  padding: 0;
+  cursor: pointer;
+  background: var(--bg-light);
+}
+
+.listing-media-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.listing-media-thumb.active {
+  border-color: var(--primary);
+}

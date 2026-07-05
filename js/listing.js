@@ -78,12 +78,38 @@ function renderStoreAddress(listing) {
   `;
 }
 
-// Renders the primary photo (or the icon placeholder if no photos were uploaded)
+// Renders the currently-active photo (or the icon placeholder if no photos were uploaded)
 function renderMediaMain(listing) {
   if (listing.photos && listing.photos.length > 0) {
-    return `<img src="${listing.photos[0]}" alt="${listing.title}" style="width:100%;height:100%;object-fit:cover;">`;
+    const src = listing.photos[activePhotoIndex] || listing.photos[0];
+    return `<img id="listingMainPhoto" src="${src}" alt="${listing.title}" style="width:100%;height:100%;object-fit:cover;">`;
   }
   return `<span class="listing-media-icon">${listing.icon || "📦"}</span>`;
+}
+
+// Renders a thumbnail strip below the main photo, only if there's more than one photo
+function renderMediaThumbs(listing) {
+  if (!listing.photos || listing.photos.length < 2) return "";
+  return `
+    <div class="listing-media-thumbs">
+      ${listing.photos.map((url, i) => `
+        <button type="button" class="listing-media-thumb ${i === activePhotoIndex ? "active" : ""}" onclick="selectListingPhoto(${i})">
+          <img src="${url}" alt="${listing.title} photo ${i + 1}">
+        </button>
+      `).join("")}
+    </div>
+  `;
+}
+
+function selectListingPhoto(index) {
+  activePhotoIndex = index;
+  const mainPhoto = document.getElementById("listingMainPhoto");
+  if (mainPhoto && currentListing && currentListing.photos) {
+    mainPhoto.src = currentListing.photos[index];
+  }
+  document.querySelectorAll(".listing-media-thumb").forEach((thumb, i) => {
+    thumb.classList.toggle("active", i === index);
+  });
 }
 
 function renderListing(listing) {
@@ -103,6 +129,7 @@ function renderListing(listing) {
           ${listing.status === 'sold' ? '<span class="listing-badge listing-badge-lg" style="background:#666;">SOLD</span>' : ''}
           ${renderMediaMain(listing)}
         </div>
+        ${renderMediaThumbs(listing)}
 
         ${renderSpecTable(listing)}
 
