@@ -81,6 +81,7 @@ function updateHeaderAuthState() {
         <p style="font-weight:600; margin-bottom:8px;">Hi, ${user.name.split(" ")[0]} 👋</p>
         <a href="dashboard.html" class="panel-link">My Ads</a>
         <a href="settings.html" class="panel-link">Settings</a>
+        ${user.isAdmin ? '<a href="admin.html" class="panel-link">Moderation queue</a>' : ''}
         <button type="button" class="panel-link" onclick="handleSignOut()" style="background:none;border:none;cursor:pointer;color:var(--accent);text-align:left;padding:6px 0;width:100%;">Sign out</button>
       </div>
     `;
