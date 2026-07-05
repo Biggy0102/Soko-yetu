@@ -39,7 +39,7 @@ function renderAdminList(listings) {
   container.innerHTML = listings.map(ad => {
     const thumb = ad.photos && ad.photos.length > 0
       ? `<img src="${ad.photos[0]}" alt="${ad.title}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`
-      : `<span style="font-size:2rem;">${ad.icon || "??"}</span>`;
+      : `<span style="font-size:2rem;">${ad.icon || "📦"}</span>`;
 
     return `
       <div class="dashboard-ad-card">
@@ -51,10 +51,10 @@ function renderAdminList(listings) {
           </div>
           <div class="dashboard-ad-price">${formatPrice(ad.price, ad.currency)}</div>
           <div class="dashboard-ad-meta">
-            ?? ${ad.sellerName || "Unknown seller"} &nbsp;�&nbsp;
-            ?? ${ad.location || ad.city} &nbsp;�&nbsp;
-            ??? ${ad.categoryName || ad.category} &nbsp;�&nbsp;
-            ?? ${new Date(ad.postedAt).toLocaleString()}
+            👤 ${ad.sellerName || "Unknown seller"} &nbsp;•&nbsp;
+            📍 ${ad.location || ad.city} &nbsp;•&nbsp;
+            🗂️ ${ad.categoryName || ad.category} &nbsp;•&nbsp;
+            🕒 ${new Date(ad.postedAt).toLocaleString()}
           </div>
         </div>
         <div class="dashboard-ad-actions">
@@ -62,6 +62,9 @@ function renderAdminList(listings) {
           ${ad.status === "pending" ? `
             <button type="button" class="btn btn-primary btn-sm" onclick="approveListing(${ad.id})">Approve</button>
             <button type="button" class="btn btn-outline btn-sm btn-danger-outline" onclick="openRejectModal(${ad.id})">Reject</button>
+          ` : ""}
+          ${ad.status === "active" ? `
+            <button type="button" class="btn btn-outline btn-sm" onclick="unapproveListing(${ad.id})">Unapprove</button>
           ` : ""}
         </div>
       </div>
@@ -105,6 +108,30 @@ async function approveListing(id) {
     });
     if (!res.ok) {
       alert("Could not approve this ad. Please try again.");
+      return;
+    }
+    loadAdminQueue();
+  } catch (err) {
+    alert("Could not connect to the server. Please try again.");
+  }
+}
+
+// ===== UNAPPROVE (send an approved ad back to pending) =====
+
+async function unapproveListing(id) {
+  if (!confirm("Send this ad back to pending review? It will be removed from browse until re-approved.")) return;
+
+  try {
+    const res = await fetch(`${API}/admin/listings/${id}/status`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getToken()}`,
+      },
+      body: JSON.stringify({ status: "pending" }),
+    });
+    if (!res.ok) {
+      alert("Could not unapprove this ad. Please try again.");
       return;
     }
     loadAdminQueue();
