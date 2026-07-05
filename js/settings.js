@@ -115,9 +115,7 @@ async function changePassword() {
     document.getElementById("settingsNewPassword").value = "";
     showConfirm("passwordSaveConfirm");
   } catch (err) {
-    document.getElementById("settingsCurrentPassword").value = "";
-    document.getElementById("settingsNewPassword").value = "";
-    showConfirm("passwordSaveConfirm");
+    setFieldError("settingsPasswordError", "Could not connect to the server. Please try again.");
   }
 }
 

@@ -2290,6 +2290,16 @@ img {
   color: var(--text-muted);
 }
 
+.rejection-note {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: #fdecec;
+  border-left: 3px solid #c0392b;
+  border-radius: 6px;
+  font-size: 12.5px;
+  color: #7a2b2b;
+}
+
 .dashboard-ad-actions {
   display: flex;
   gap: 8px;

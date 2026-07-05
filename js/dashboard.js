@@ -75,6 +75,7 @@ function renderTabs(ads) {
     { key: "all", label: "All" },
     { key: "active", label: "Active" },
     { key: "pending", label: "Pending review" },
+    { key: "rejected", label: "Rejected" },
     { key: "sold", label: "Sold" },
   ];
 
@@ -125,11 +126,13 @@ function renderAdsList(ads) {
           </div>
           <div class="dashboard-ad-price">${formatPrice(ad.price, ad.currency)}</div>
           <div class="dashboard-ad-meta">📍 ${ad.location || ad.city} &nbsp;•&nbsp; 👁️ ${(ad.views || 0).toLocaleString()} views &nbsp;•&nbsp; 🕒 ${new Date(ad.postedAt).toLocaleDateString()}</div>
+          ${ad.status === "rejected" ? `<div class="rejection-note"><strong>Why this was rejected:</strong> ${ad.moderationNote || "No reason given - contact support if you would like more detail."}</div>` : ""}
         </div>
         <div class="dashboard-ad-actions">
           <a href="listing.html?id=${ad.id}" class="btn btn-outline btn-sm">View</a>
           <button type="button" class="btn btn-outline btn-sm" onclick="openEditModal(${ad.id})">Edit</button>
           ${ad.status === "active" ? `<button type="button" class="btn btn-outline btn-sm" onclick="markAsSold(${ad.id})">Mark sold</button>` : ""}
+          ${ad.status === "rejected" ? `<button type="button" class="btn btn-primary btn-sm" onclick="resubmitListing(${ad.id})">Edit & resubmit</button>` : ""}
           <button type="button" class="btn btn-outline btn-sm btn-danger-outline" onclick="openDeleteModal(${ad.id})">Delete</button>
         </div>
       </div>
@@ -290,6 +293,26 @@ async function markAsSold(id) {
     renderDashboard();
   } catch (err) {
     alert("Could not mark as sold. Please try again.");
+  }
+}
+
+async function resubmitListing(id) {
+  if (!confirm("Send this ad back for review? Make sure you have fixed the issue mentioned in the rejection note first.")) return;
+
+  try {
+    const res = await fetch(`${API}/listings/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getToken()}`,
+      },
+      body: JSON.stringify({ status: "pending" }),
+    });
+
+    if (!res.ok) throw new Error("Failed");
+    renderDashboard();
+  } catch (err) {
+    alert("Could not resubmit this ad. Please try again.");
   }
 }
 
