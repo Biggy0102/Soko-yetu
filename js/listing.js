@@ -5,6 +5,7 @@
 
 let currentListing = null;
 let currentConversationId = null;
+let activePhotoIndex = 0;
 
 function getListingIdFromUrl() {
   const params = new URLSearchParams(window.location.search);
@@ -639,6 +640,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
     const data = await res.json();
     currentListing = data.listing;
+    activePhotoIndex = 0;
   } catch (err) {
     document.getElementById("notFound").style.display = "block";
     return;
