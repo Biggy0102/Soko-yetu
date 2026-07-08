@@ -34,6 +34,34 @@ function redirectToLogin() {
   window.location.href = "login.html?redirect=" + encodeURIComponent(here);
 }
 
+async function toggleSaveAd(id) {
+  if (!isLoggedIn()) {
+    redirectToLogin();
+    return;
+  }
+
+  const btn = document.getElementById("saveAdDetailBtn");
+  const alreadySaved = isAdSaved(id);
+
+  try {
+    const res = await fetch(`${API}/saved-ads/${id}`, {
+      method: alreadySaved ? "DELETE" : "POST",
+      headers: { Authorization: `Bearer ${getToken()}` },
+    });
+    if (!res.ok && res.status !== 204) throw new Error("Failed");
+
+    if (alreadySaved) {
+      savedAdIds.delete(id);
+    } else {
+      savedAdIds.add(id);
+    }
+    if (btn) btn.innerHTML = isAdSaved(id) ? "❤️ Saved" : "🤍 Save ad";
+    loadSavedAds();
+  } catch (err) {
+    alert("Could not update saved ads. Please try again.");
+  }
+}
+
 function renderBreadcrumb(listing) {
   const breadcrumb = document.getElementById("breadcrumb");
   const catName = listing.categoryName || getCategoryName(listing.category);
@@ -150,6 +178,9 @@ function renderListing(listing) {
         </div>
 
         ${!isOwner ? `
+        <button type="button" class="btn btn-outline btn-full" id="saveAdDetailBtn" onclick="toggleSaveAd(${listing.id})">
+          ${isAdSaved(listing.id) ? '❤️ Saved' : '🤍 Save ad'}
+        </button>
         <button type="button" class="btn btn-outline btn-full" onclick="openOfferModal(${listing.id})">
           🏷️ Make an offer
         </button>` : ''}
@@ -321,8 +352,7 @@ async function toggleOwnListingStatus(id) {
 
 // ===== PRICE HISTORY MODAL =====
 
-function openPriceHistoryModal(id) {
-  if (!currentListing) return;
+function openPriceHistoryModal(id) {  if (!currentListing) return;
   const listing = currentListing;
 
   const history = getPriceHistoryData(listing);
@@ -631,6 +661,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     document.getElementById("notFound").style.display = "block";
     return;
   }
+
+  // Same reasoning as browse.js - main.js's own DOMContentLoaded handler runs
+  // independently, so we can't rely on it finishing before renderListing and
+  // the similar-listings grid need the saved-ad heart state.
+  await loadSavedAds();
 
   try {
     const res = await fetch(`${API}/listings/${id}`);

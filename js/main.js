@@ -216,11 +216,13 @@ function renderListingGrid(listings, containerId) {
     const thumb = item.photos && item.photos.length > 0
       ? `<img src="${item.photos[0]}" alt="${item.title}" style="width:100%;height:100%;object-fit:cover;">`
       : `<span style="font-size:2.5rem;">${item.icon || getCategoryIcon(item.category) || "📦"}</span>`;
+    const saved = isAdSaved(item.id);
 
     return `
       <a href="listing.html?id=${item.id}" class="listing-card">
         <div class="listing-img">
           ${item.featured ? '<span class="listing-badge">FEATURED</span>' : ''}
+          <button type="button" class="save-heart-btn ${saved ? 'saved' : ''}" onclick="toggleSaveAdCard(${item.id}, event)" aria-label="Save ad">${saved ? '❤️' : '🤍'}</button>
           ${thumb}
         </div>
         <div class="listing-info">
@@ -231,6 +233,99 @@ function renderListingGrid(listings, containerId) {
       </a>
     `;
   }).join("");
+}
+
+// ===== SAVED ADS =====
+// Real version of the "Saved" header icon panel, which used to be just a
+// static empty-state message with no data behind it. Backend already existed
+// (savedAdController.js) - this was purely a missing frontend wiring gap.
+
+let savedAdIds = new Set();
+
+async function loadSavedAds() {
+  if (!isLoggedIn()) {
+    savedAdIds = new Set();
+    renderSavedAdsPanel([]);
+    return;
+  }
+  try {
+    const res = await fetch(`${API}/saved-ads`, {
+      headers: { Authorization: `Bearer ${getToken()}` },
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    const savedAds = data.savedAds || [];
+    savedAdIds = new Set(savedAds.map(s => s.listing.id));
+    renderSavedAdsPanel(savedAds);
+  } catch (err) {
+    // Saved ads is a nice-to-have panel, not core functionality - fail quietly
+  }
+}
+
+function renderSavedAdsPanel(savedAds) {
+  const panel = document.getElementById("panel-saved");
+  if (!panel) return;
+
+  if (!savedAds || savedAds.length === 0) {
+    panel.innerHTML = `
+      <h4>Saved ads</h4>
+      <p class="icon-panel-empty">You haven't saved any ads yet. Tap the heart on a listing to save it here.</p>
+    `;
+    return;
+  }
+
+  panel.innerHTML = `
+    <h4>Saved ads</h4>
+    ${savedAds.slice(0, 5).map(s => `
+      <a href="listing.html?id=${s.listing.id}" class="icon-panel-row" style="margin-bottom:10px; text-decoration:none; color:inherit;">
+        <div class="icon-panel-avatar" style="background:#eee; overflow:hidden;">
+          ${s.listing.photos && s.listing.photos[0] ? `<img src="${s.listing.photos[0]}" alt="" style="width:100%;height:100%;object-fit:cover;">` : (s.listing.icon || "📦")}
+        </div>
+        <div>
+          <div class="icon-panel-row-title">${s.listing.title}</div>
+          <div class="icon-panel-row-sub">${formatPrice(s.listing.price, s.listing.currency)}</div>
+        </div>
+      </a>
+    `).join("")}
+    ${savedAds.length > 5 ? `<p class="icon-panel-note">+ ${savedAds.length - 5} more saved</p>` : ""}
+  `;
+}
+
+function isAdSaved(id) {
+  return savedAdIds.has(id);
+}
+
+async function toggleSaveAdCard(id, event) {
+  if (event) { event.preventDefault(); event.stopPropagation(); }
+
+  if (!isLoggedIn()) {
+    window.location.href = "login.html?redirect=" + encodeURIComponent(window.location.pathname + window.location.search);
+    return;
+  }
+
+  const btn = event ? event.currentTarget : null;
+  const alreadySaved = savedAdIds.has(id);
+
+  try {
+    const res = await fetch(`${API}/saved-ads/${id}`, {
+      method: alreadySaved ? "DELETE" : "POST",
+      headers: { Authorization: `Bearer ${getToken()}` },
+    });
+    if (!res.ok && res.status !== 204) throw new Error("Failed");
+
+    if (alreadySaved) {
+      savedAdIds.delete(id);
+    } else {
+      savedAdIds.add(id);
+    }
+    if (btn) {
+      btn.textContent = savedAdIds.has(id) ? "❤️" : "🤍";
+      btn.classList.toggle("saved", savedAdIds.has(id));
+    }
+    loadSavedAds();
+  } catch (err) {
+    alert("Could not update saved ads. Please try again.");
+  }
 }
 
 // ===== SEARCH FORM =====
@@ -345,5 +440,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   renderCategoryGrid();
   setupSearchForm();
   updateHeaderAuthState();
+  await loadSavedAds();
   loadHomepageListings();
 });

@@ -442,6 +442,28 @@ img {
   border-radius: 4px;
 }
 
+.save-heart-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.9);
+  border: none;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: transform 0.15s ease;
+}
+.save-heart-btn:hover {
+  transform: scale(1.1);
+}
+
 .listing-info {
   padding: 12px;
 }

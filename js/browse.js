@@ -145,6 +145,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   // independently and isn't guaranteed to finish before renderBrowseResults
   // needs CATEGORIES/COUNTRIES for filter labels - so we await it ourselves.
   await loadReferenceData();
+  // Same reasoning for saved-ad heart states on each card.
+  await loadSavedAds();
 
   syncFilterControls();
   setupBrowseControls();
