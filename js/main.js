@@ -399,8 +399,8 @@ function renderBottomNav() {
 
   const path = window.location.pathname.split("/").pop() || "index.html";
   const loggedIn = isLoggedIn();
-  const profileHref = loggedIn ? "dashboard.html" : "login.html";
-  const isProfileActive = path === "dashboard.html" || path === "login.html" || path === "settings.html";
+  const profileHref = loggedIn ? "settings.html" : "login.html";
+  const isProfileActive = path === "settings.html" || path === "login.html";
 
   const nav = document.createElement("nav");
   nav.className = "bottom-nav";
