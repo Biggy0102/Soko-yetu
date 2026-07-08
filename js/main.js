@@ -378,7 +378,11 @@ function handleBottomNavSaved(e) {
   const panel = document.getElementById("panel-saved");
   if (panel) {
     e.preventDefault();
+    e.stopPropagation();
     toggleIconPanel("saved");
+    if (panel.classList.contains("open")) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
     return false;
   }
   return true;
@@ -388,7 +392,11 @@ function handleBottomNavMessages(e) {
   const panel = document.getElementById("panel-messages");
   if (panel) {
     e.preventDefault();
+    e.stopPropagation();
     toggleIconPanel("messages");
+    if (panel.classList.contains("open")) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
     return false;
   }
   return true;
